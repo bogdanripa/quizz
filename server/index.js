@@ -7,6 +7,12 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} ${req.originalUrl}`
+  );
+  next();
+});
 
 if (!process.env.MONGODB_URI) {
   console.warn("Missing MONGODB_URI in environment.");
@@ -88,6 +94,7 @@ app.post("/quizz", async (req, res) => {
 
   try {
     await Quizz.create({ quizzId });
+    console.log(`[${new Date().toISOString()}] created quizz ${quizzId}`);
     res.status(201).json({ quizzId });
   } catch (error) {
     res.status(500).json({ error: "Failed to create quiz" });
