@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 export default function Home() {
   return (
     <section className="card">
@@ -7,9 +9,9 @@ export default function Home() {
         then guide your group through fast rounds of voting and instantly share
         ranked results.
       </p>
-      <a className="primary-button" href="/start">
+      <Link className="primary-button" to="/start">
         Lets start
-      </a>
+      </Link>
     </section>
   );
 }
