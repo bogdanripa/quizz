@@ -53,9 +53,18 @@ export default function Join() {
   const [voteSubmitted4, setVoteSubmitted4] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
 
+  const hasSubmittedAnswers =
+    answers.explorer.trim() ||
+    answers.introspector.trim() ||
+    answers.comparer.trim() ||
+    answers.recommender.trim();
+
   const apiFetch = (path, options) => fetch(apiUrl(path), options);
 
   const resolveStageForStatus = (statusValue) => {
+    if (statusValue === "collecting") {
+      return hasSubmittedAnswers ? "waiting" : "step1";
+    }
     if (statusValue === "results1") return "results1";
     if (statusValue === "voting1") {
       return voteSubmitted ? "waiting-results" : "vote1";
@@ -193,6 +202,7 @@ export default function Join() {
     };
   }, [
     quizzId,
+    answers,
     voteSubmitted,
     voteSubmitted2,
     voteSubmitted3,
@@ -248,6 +258,7 @@ export default function Join() {
   }, [
     stage,
     quizzId,
+    answers,
     voteSubmitted,
     voteSubmitted2,
     voteSubmitted3,
