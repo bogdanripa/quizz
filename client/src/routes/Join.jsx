@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "../lib/api";
 
 function generateId() {
   if (typeof crypto !== "undefined" && crypto.randomUUID) {
@@ -51,6 +52,8 @@ export default function Join() {
   const [selectedRecommender, setSelectedRecommender] = useState(new Set());
   const [voteSubmitted4, setVoteSubmitted4] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
+
+  const apiFetch = (path, options) => fetch(apiUrl(path), options);
 
   const resolveStageForStatus = (statusValue) => {
     if (statusValue === "results1") return "results1";
@@ -163,7 +166,7 @@ export default function Join() {
 
     async function syncStageWithStatus() {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/status`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/status`);
         if (!response.ok) {
           throw new Error(`Status check failed (${response.status})`);
         }
@@ -221,7 +224,7 @@ export default function Join() {
     let active = true;
     const interval = setInterval(async () => {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/status`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/status`);
         if (!response.ok) {
           throw new Error(`Status check failed (${response.status})`);
         }
@@ -260,7 +263,7 @@ export default function Join() {
 
     async function loadExplorer() {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/explorer`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/explorer`);
         if (!response.ok) {
           throw new Error(`Load failed (${response.status})`);
         }
@@ -294,7 +297,7 @@ export default function Join() {
 
     async function loadIntrospector() {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/introspector`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/introspector`);
         if (!response.ok) {
           throw new Error(`Load failed (${response.status})`);
         }
@@ -328,7 +331,7 @@ export default function Join() {
 
     async function loadComparer() {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/comparer`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/comparer`);
         if (!response.ok) {
           throw new Error(`Load failed (${response.status})`);
         }
@@ -362,7 +365,7 @@ export default function Join() {
 
     async function loadRecommender() {
       try {
-        const response = await fetch(`/api/quizz/${quizzId}/recommender`);
+        const response = await apiFetch(`/api/quizz/${quizzId}/recommender`);
         if (!response.ok) {
           throw new Error(`Load failed (${response.status})`);
         }
@@ -401,7 +404,7 @@ export default function Join() {
     setStatusMessage("");
 
     try {
-      const response = await fetch(`/api/quizz/${quizzId}/participants`, {
+      const response = await apiFetch(`/api/quizz/${quizzId}/participants`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ participantId, answers }),
@@ -474,7 +477,7 @@ export default function Join() {
           onClick={async () => {
             setStatusMessage("");
             try {
-              const response = await fetch(
+              const response = await apiFetch(
                 `/api/quizz/${quizzId}/votes/explorer`,
                 {
                   method: "POST",
@@ -567,7 +570,7 @@ export default function Join() {
           onClick={async () => {
             setStatusMessage("");
             try {
-              const response = await fetch(
+              const response = await apiFetch(
                 `/api/quizz/${quizzId}/votes/introspector`,
                 {
                   method: "POST",
@@ -660,7 +663,7 @@ export default function Join() {
           onClick={async () => {
             setStatusMessage("");
             try {
-              const response = await fetch(
+              const response = await apiFetch(
                 `/api/quizz/${quizzId}/votes/comparer`,
                 {
                   method: "POST",
@@ -753,7 +756,7 @@ export default function Join() {
           onClick={async () => {
             setStatusMessage("");
             try {
-              const response = await fetch(
+              const response = await apiFetch(
                 `/api/quizz/${quizzId}/votes/recommender`,
                 {
                   method: "POST",

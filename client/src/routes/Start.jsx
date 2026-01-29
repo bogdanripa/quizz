@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { QRCodeCanvas } from "qrcode.react";
+import { apiUrl } from "../lib/api";
 
 const PHASES = [
   "collecting",
@@ -44,6 +45,8 @@ export default function Start() {
     participantsCount: 0,
     submittedCount: 0,
   });
+
+  const apiFetch = (path, options) => fetch(apiUrl(path), options);
   useEffect(() => {
     if (!routeQuizzId) {
       return;
@@ -60,7 +63,7 @@ export default function Start() {
 
     async function createQuizz() {
       try {
-        const response = await fetch("/api/quizz", { method: "POST" });
+        const response = await apiFetch("/api/quizz", { method: "POST" });
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }
@@ -107,7 +110,7 @@ export default function Start() {
               : `/api/quizz/${quizzId}/recommender/results`;
 
       try {
-        const resultsResponse = await fetch(endpoint);
+        const resultsResponse = await apiFetch(endpoint);
         if (!resultsResponse.ok) {
           throw new Error(`Request failed with ${resultsResponse.status}`);
         }
@@ -146,7 +149,7 @@ export default function Start() {
           `/api/quizz/${quizzId}/recommender/results`,
         ];
         const responses = await Promise.all(
-          endpoints.map((endpoint) => fetch(endpoint))
+          endpoints.map((endpoint) => apiFetch(endpoint))
         );
         for (const response of responses) {
           if (!response.ok) {
@@ -197,7 +200,7 @@ export default function Start() {
               : `/api/quizz/${quizzId}/votes/recommender/summary`;
 
       try {
-        const response = await fetch(endpoint);
+        const response = await apiFetch(endpoint);
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }
@@ -234,7 +237,7 @@ export default function Start() {
 
     async function loadParticipantSummary() {
       try {
-        const response = await fetch(
+        const response = await apiFetch(
           `/api/quizz/${quizzId}/participants/summary`
         );
         if (!response.ok) {
@@ -489,7 +492,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "voting1" }),
@@ -514,7 +517,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "results1" }),
@@ -539,7 +542,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "voting2" }),
@@ -564,7 +567,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "results2" }),
@@ -589,7 +592,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "voting3" }),
@@ -614,7 +617,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "results3" }),
@@ -639,7 +642,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "voting4" }),
@@ -664,7 +667,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "results4" }),
@@ -689,7 +692,7 @@ export default function Start() {
           disabled={!quizzId}
           onClick={async () => {
             try {
-              const response = await fetch(`/api/quizz/${quizzId}/status`, {
+              const response = await apiFetch(`/api/quizz/${quizzId}/status`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: "finish" }),
