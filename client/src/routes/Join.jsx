@@ -52,19 +52,13 @@ export default function Join() {
   const [selectedRecommender, setSelectedRecommender] = useState(new Set());
   const [voteSubmitted4, setVoteSubmitted4] = useState(false);
   const [isSyncing, setIsSyncing] = useState(true);
-
-  const hasSubmittedAnswers = Boolean(
-    answers.explorer.trim() ||
-      answers.introspector.trim() ||
-      answers.comparer.trim() ||
-      answers.recommender.trim()
-  );
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const apiFetch = (path, options) => fetch(apiUrl(path), options);
 
   const resolveStageForStatus = (statusValue) => {
     if (statusValue === "collecting") {
-      return stage === "waiting" || hasSubmittedAnswers ? "waiting" : "step1";
+      return hasSubmitted ? "waiting" : "step1";
     }
     if (statusValue === "results1") return "results1";
     if (statusValue === "voting1") {
@@ -112,6 +106,9 @@ export default function Join() {
       if (parsed.stage) {
         setStage(parsed.stage);
       }
+      if (parsed.hasSubmitted) {
+        setHasSubmitted(parsed.hasSubmitted);
+      }
       if (parsed.selected) {
         setSelected(new Set(parsed.selected));
       }
@@ -155,6 +152,7 @@ export default function Join() {
         voteSubmitted3,
         selectedRecommender: Array.from(selectedRecommender),
         voteSubmitted4,
+        hasSubmitted,
       })
     );
   }, [
@@ -168,6 +166,7 @@ export default function Join() {
     voteSubmitted3,
     selectedRecommender,
     voteSubmitted4,
+    hasSubmitted,
     stateKey,
   ]);
 
@@ -203,7 +202,6 @@ export default function Join() {
     };
   }, [
     quizzId,
-    answers,
     voteSubmitted,
     voteSubmitted2,
     voteSubmitted3,
@@ -259,7 +257,6 @@ export default function Join() {
   }, [
     stage,
     quizzId,
-    answers,
     voteSubmitted,
     voteSubmitted2,
     voteSubmitted3,
@@ -426,6 +423,7 @@ export default function Join() {
         throw new Error(`Submit failed (${response.status})`);
       }
 
+      setHasSubmitted(true);
       setStage("waiting");
     } catch (error) {
       setStatusMessage(error.message);
