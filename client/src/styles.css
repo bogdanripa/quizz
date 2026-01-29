@@ -69,6 +69,11 @@ body {
   place-items: center;
 }
 
+.main--wide {
+  padding: 1.5rem;
+  place-items: start stretch;
+}
+
 .card {
   width: min(520px, 90vw);
   padding: 1.5rem;
@@ -78,6 +83,11 @@ body {
   box-shadow: 6px 6px 0 #0b0b0b;
   display: grid;
   gap: 1rem;
+}
+
+.card--wide {
+  width: 100%;
+  max-width: none;
 }
 
 .card-header {

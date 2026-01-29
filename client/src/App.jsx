@@ -6,6 +6,7 @@ import Join from "./routes/Join.jsx";
 export default function App() {
   const { pathname } = useLocation();
   const hideHeader = pathname.startsWith("/go/");
+  const isFinalResults = pathname.endsWith("/finish");
 
   return (
     <div className="app">
@@ -19,7 +20,7 @@ export default function App() {
         </header>
       )}
 
-      <main className="main">
+      <main className={`main${isFinalResults ? " main--wide" : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/start" element={<Start />} />

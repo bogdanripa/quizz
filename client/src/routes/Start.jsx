@@ -291,7 +291,7 @@ export default function Start() {
   };
 
   return (
-    <section className="card">
+    <section className={`card${phase === "finish" ? " card--wide" : ""}`}>
       <div className="card-header">
         <h2>
           {phase === "results1"
