@@ -174,6 +174,8 @@ textarea {
 .results--grid {
   display: grid;
   gap: 1.5rem;
+  width: 95%;
+  margin: 0 auto;
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 
